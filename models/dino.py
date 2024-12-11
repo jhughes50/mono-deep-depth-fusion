@@ -6,7 +6,7 @@
 """
 
 import torch
-from donv2 import DinoVisionTransformer
+from dinov2 import DinoVisionTransformer
 
 class DinoBackbone:
     """ A wrapper around DinoV2 """

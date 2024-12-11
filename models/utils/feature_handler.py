@@ -40,21 +40,19 @@ class FeatureProjectionModule(nn.Module):
     def forward(self, x : Tensor, iter : int) -> Tensor:
         x = self.projection_2d_[iter](x)
         x = self.resize_layers_(x)
-
+        
+        return x
 
 class DinoFeatureHandler(FeatureProjectionModule):
 
-    def __init__(self, patch_height : int, patch_width : int, in_channels : int, out_channels : Tuple[int] ) -> None:
+    def __init__(self, in_channels : int, out_channels : Tuple[int] ) -> None:
         super().__init__(in_channels, out_channels)
 
-        self.patch_height_ = patch_height
-        self.patch_width_  = patch_width
-
-    def __call__(self, features : Tuple) -> List[Tensor]:
+    def __call__(self, features : Tuple[Tuple[Tensor], patch_h : int, patch_w : int) -> List[Tensor]:
         output = list()
         for iter, x in enumerate(features):
             x = x[0]
-            x = x.permute(0, 2, 1).reshape((x.size(0), x.shape[-1], self.patch_height_, self.patch_weight_))
+            x = x.permute(0, 2, 1).reshape((x.size(0), x.shape[-1], patch_h, self.patch_w))
             
             x = forward(x, iter)
             
